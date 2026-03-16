@@ -1,0 +1,3 @@
+/Users/jeffreyhartigan/Documents/spacexai/Autograd_Cpp/cpp-engine/build/CMakeFiles/micrograd.dir
+/Users/jeffreyhartigan/Documents/spacexai/Autograd_Cpp/cpp-engine/build/CMakeFiles/edit_cache.dir
+/Users/jeffreyhartigan/Documents/spacexai/Autograd_Cpp/cpp-engine/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,15 @@
+# macOS                                                                                                                              
+  .DS_Store
+                                                                                                                                       
+  # C++ / CMake                                                                                                                      
+  build/                                                                                                                               
+  *.o
+  *.obj
+
+  # Rust
+  target/
+
+  # Python
+  __pycache__/
+  *.pyc
+  .ipynb_checkpoints/
