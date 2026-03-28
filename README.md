@@ -33,7 +33,7 @@ Training a 3→4→4→1 MLP on 4 samples with MSE loss:
 | Language | Iterations | Time     | Speedup |
 |----------|------------|----------|---------|
 | Python   | 2,000      | ~2.6s    | 1×      |
-| C++      | 2,000      | ~0.494s  | ~5.3×   |
+| C++      | 2,000      | ~0.15s  | ~17.3×   |
 | Rust     | TBD        | TBD      | TBD     |
 
 ## Implementation notes
