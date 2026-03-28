@@ -8,6 +8,7 @@
 // Constructor and methods for Manager class
 Value& Manager::create(double data, std::string label, OpType op) {
     auto node = std::make_unique<Value>(data, this, label, op);
+    node->idx = m_all_nodes.size();
     Value& ref = *node;
     m_all_nodes.push_back(std::move(node));
 
@@ -15,17 +16,20 @@ Value& Manager::create(double data, std::string label, OpType op) {
 }
 
 void Manager::backward(Value& loss) {
-    std::vector<Value*> topo;
-    std::unordered_set<Value*> visited;
-    build_topo(&loss, topo, visited);
+    if(!m_is_topo_built){
+        std::unordered_set<Value*> visited;
+        build_topo(&loss, visited);
+        m_is_topo_built = true;
+    }
 
-    for(auto& node : topo) {
-        node->m_grad = 0.0;
+    for(auto& index : m_topo) {
+        m_all_nodes[index]->m_grad = 0.0;
     }
 
     loss.m_grad = 1.0;
-    for(auto it = topo.rbegin(); it != topo.rend(); ++it){
-        Value* node = *it;
+    for(auto it = m_topo.rbegin(); it != m_topo.rend(); ++it){
+        size_t node_id = *it;
+        Value* node = m_all_nodes[node_id].get();
         if(!node || !node->m_prev[0]){
             continue;
         }
@@ -63,9 +67,8 @@ void Manager::backward(Value& loss) {
 }
 
 void Manager::clear_ephemeral_nodes(const std::vector<Value*>& parameters){
-    std::unordered_set<Value*> keep_set(parameters.begin(), parameters.end());
-    std::erase_if(m_all_nodes, [&](const std::unique_ptr<Value>& node) {
-        return keep_set.find(node.get()) == keep_set.end();
+    std::erase_if(m_all_nodes, [](const std::unique_ptr<Value>& node) {
+        return !node->m_is_parameter;
     });
 }
 
@@ -73,16 +76,16 @@ void Manager::reserve(size_t size){
     m_all_nodes.reserve(size);
 }
 
-void Manager::build_topo(Value* v, std::vector<Value*>& topo, std::unordered_set<Value*>& visited) {
+void Manager::build_topo(Value* v, std::unordered_set<Value*>& visited) {
     if(v == nullptr || visited.count(v)) return;
     visited.insert(v);
 
     for(Value* prev : v->m_prev){
         if(prev != nullptr) {
-            build_topo(prev, topo, visited);
+            build_topo(prev, visited);
         }
     }
-    topo.push_back(v);
+    m_topo.push_back(v->idx);
 }
 
 //-------------------------------------------------------------------------------------------------

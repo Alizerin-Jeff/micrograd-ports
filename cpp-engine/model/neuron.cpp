@@ -15,11 +15,13 @@ Neuron::Neuron(size_t nin, Manager* vm, OpType op)
         }
         for(size_t i=0; i < nin; ++i) {
             double val = dist(gen);
-            Value& wi = vm->create(val, "w" + std::to_string(i));
+            Value& wi = vm->create(val, "w");
+            wi.m_is_parameter = true;
             w.push_back(&wi);
         }
         double b_val = dist(gen);
         Value& bias = m_vm->create(b_val, "b");
+        bias.m_is_parameter = true;
         b = &bias;
     }
 

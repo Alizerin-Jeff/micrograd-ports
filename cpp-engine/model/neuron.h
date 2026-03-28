@@ -9,6 +9,7 @@ class Neuron {
         std::vector<Value*> w;
         Value* b;
         
+        
 
     public:
         Neuron(size_t nin, Manager* vm, OpType op);

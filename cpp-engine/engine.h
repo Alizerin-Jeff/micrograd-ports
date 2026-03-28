@@ -11,25 +11,29 @@ enum class OpType { NONE, ADD, MUL, POW, TANH, RELU};
 class Manager {
     private:
         std::vector<std::unique_ptr<Value>> m_all_nodes;
+        std::vector<size_t> m_topo;
+        bool m_is_topo_built = false;
     public:
         Value& create(double data, std::string label = "", OpType op = OpType::NONE);
 
         void backward(Value& loss); 
         void clear_ephemeral_nodes(const std::vector<Value*>& parameters);
         void reserve(size_t size);
-        void build_topo(Value* loss, std::vector<Value*>& topo, std::unordered_set<Value*>& visited);
+        void build_topo(Value* loss, std::unordered_set<Value*>& visited);
 };
 
 class Value {
     public:
         double m_data;
         double m_grad = 0.0;
+        bool m_is_parameter = false;
     private:
         Manager* m_vm;
         std::string m_label;
         OpType m_op;
         Value* m_prev[2] = {nullptr, nullptr};
         double scalar = 1.0;
+        size_t idx;
 
     public:
         friend class Manager;
