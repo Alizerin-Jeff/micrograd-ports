@@ -66,7 +66,7 @@ void Manager::backward(Value& loss) {
     }
 }
 
-void Manager::clear_ephemeral_nodes(const std::vector<Value*>& parameters){
+void Manager::clear_ephemeral_nodes(){
     std::erase_if(m_all_nodes, [](const std::unique_ptr<Value>& node) {
         return !node->m_is_parameter;
     });

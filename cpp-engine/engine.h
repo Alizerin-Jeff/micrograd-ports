@@ -17,7 +17,7 @@ class Manager {
         Value& create(double data, std::string label = "", OpType op = OpType::NONE);
 
         void backward(Value& loss); 
-        void clear_ephemeral_nodes(const std::vector<Value*>& parameters);
+        void clear_ephemeral_nodes();
         void reserve(size_t size);
         void build_topo(Value* loss, std::unordered_set<Value*>& visited);
 };

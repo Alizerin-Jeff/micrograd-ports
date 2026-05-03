@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
                 std::cout << "------------------------------------\n";
                 std::cout << "Total Loss: " << std::scientific << std::setprecision(8) << loss->m_data << "\n\n";
             }
-            vm.clear_ephemeral_nodes(params);
+            vm.clear_ephemeral_nodes();
 
         }
     }
